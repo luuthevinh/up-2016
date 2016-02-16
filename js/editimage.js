@@ -8,8 +8,8 @@ var canvasHeight = canvas.height = 500;
 var minEdge = 0;
 
 var frame = new Image;
-frame.src = "avatar_frame.png";
-frame.crossOrigin = 'anonymous';
+frame.src = "images/avatar_frame.png";
+//frame.crossOrigin = 'anonymous';
 
 img1.onload = function() {
     minEdge = Math.min(img1.width, img1.height)
@@ -97,8 +97,8 @@ function handleMouseMove(e) {
         imagePosY = img1.height - minEdge;
       }
 
-   	  context.drawImage(img1, imagePosX, imagePosY, minEdge, minEdge, 0, 0, canvas.width, canvas.height);
-   	  context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height);
+   	  context.drawImage(img1, imagePosX, imagePosY, minEdge, minEdge, 0, 0, canvasWidth, canvasHeight);
+   	  context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvasWidth, canvasHeight);
   }
 
   preX = canMouseX;

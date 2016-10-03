@@ -2,10 +2,20 @@ var img1 = document.getElementById("source");
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
-var canvasWidth = canvas.width = 500;
-var canvasHeight = canvas.height = 500;
+var scaleBar = document.getElementById("scaleBar");
+
+var canvasWidth = canvas.width = 1000;
+var canvasHeight = canvas.height = 1000;
 
 var minEdge = 0;
+var curScale = 1;
+var minScale = 1;
+
+var preX, preY;
+var imagePosX = 0;
+var imagePosY = 0;
+var sWidth = canvasWidth;
+var sHeight = canvasHeight;
 
 var frame = new Image;
 frame.src = "images/avatar_frame.png";
@@ -13,10 +23,16 @@ frame.src = "images/avatar_frame.png";
 
 img1.onload = function() {
     minEdge = Math.min(img1.width, img1.height)
-
-    context.clearRect(0,0, canvasWidth, canvasHeight);
-    context.drawImage(img1, 0, 0, minEdge, minEdge, 0, 0, canvasWidth, canvasHeight);
-    context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvasWidth, canvasHeight);
+	
+	minScale = canvasWidth / minEdge;
+	curScale = minScale;
+	
+	scaleBar.value = "1";
+	
+	sWidth = canvasWidth / curScale;
+	sHeight = canvasHeight / curScale;
+	
+	drawCurrentImage();
 }
 
 
@@ -24,14 +40,27 @@ frame.onload = function() {
  	context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvasWidth, canvasHeight);
 }
 
+scaleBar.oninput = function() {
+	
+	// set current scale
+	curScale = minScale * scaleBar.value;
+	
+	// update source rect with scale ratio
+	sWidth = canvasWidth / curScale;
+	sHeight = canvasHeight / curScale;
+	
+	// draw image
+	drawCurrentImage();
+	
+	// set display value
+	var scaleValue = document.getElementById("scaleValue");
+	scaleValue.innerHTML = scaleBar.value;
+}
 
 var canvasOffset = $("#canvas").offset();
 var offsetX = canvasOffset.left;
 var offsetY = canvasOffset.top;
 var isDragging = false;
-var preX, preY;
-var imagePosX = 0;
-var imagePosY = 0;
 
 
 function handleMouseDown(e){
@@ -61,7 +90,7 @@ function handleMouseOut(e){
   canMouseY = parseInt(e.clientY - offsetY);
   
   // user has left the canvas, so clear the drag flag
-  isDragging=false;
+  isDragging = false;
 
   preX =  canMouseX;
   preY = canMouseY;
@@ -73,42 +102,23 @@ function handleMouseMove(e) {
 
   // if the drag flag is set, clear the canvas and draw the image
   if(isDragging) {
-      context.clearRect(0,0,canvasWidth,canvasHeight);
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
 
       // delta
-      imagePosX -= canMouseX - preX;
-      imagePosY -= canMouseY - preY;
-
-      if(imagePosX < 0)
-      {
-        imagePosX = 0;
-      }
-      else if(imagePosX > img1.width - minEdge)
-      {
-        imagePosX = img1.width - minEdge;
-      }
-
-      if(imagePosY < 0)
-      {
-        imagePosY = 0;
-      }
-      else if(imagePosY > img1.height - minEdge)
-      {
-        imagePosY = img1.height - minEdge;
-      }
-
-   	  context.drawImage(img1, imagePosX, imagePosY, minEdge, minEdge, 0, 0, canvasWidth, canvasHeight);
-   	  context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvasWidth, canvasHeight);
+      imagePosX -= (canMouseX - preX) * 3 / curScale;
+      imagePosY -= (canMouseY - preY) * 3 / curScale;
+	  
+      drawCurrentImage();
   }
 
   preX = canMouseX;
   preY = canMouseY;
 }
 
-$("#canvas").mousedown(function(e){handleMouseDown(e);});
-$("#canvas").mousemove(function(e){handleMouseMove(e);});
-$("#canvas").mouseup(function(e){handleMouseUp(e);});
-$("#canvas").mouseout(function(e){handleMouseOut(e);});
+$("#canvas").mousedown(function(e){ handleMouseDown(e); });
+$("#canvas").mousemove(function(e){ handleMouseMove(e); });
+$("#canvas").mouseup(function(e){ handleMouseUp(e); });
+$("#canvas").mouseout(function(e){ handleMouseOut(e); });
 
 function selectFile() {
   $("#imageFile").click();
@@ -136,5 +146,31 @@ function downloadFile(button, canvasId, filename) {
 };
 
 document.getElementById('downloadBtn').addEventListener('click', function() {
-    downloadFile(this, "canvas", "up_avatar.png");
+    downloadFile(this, "canvas", "vnu_tour_avatar.png");
 }, false);
+
+
+function drawCurrentImage()
+{
+	if(imagePosX < 0)
+	{
+		imagePosX = 0;
+	}
+	else if(imagePosX > img1.width - sWidth)
+	{
+		imagePosX = img1.width - sWidth;
+	}
+
+	if(imagePosY < 0)
+	{
+		imagePosY = 0;
+	}
+	else if(imagePosY > img1.height - sHeight)
+	{
+		imagePosY = img1.height - sHeight;
+	}
+  
+	// draw image
+	context.drawImage(img1, imagePosX, imagePosY, sWidth, sHeight, 0, 0, canvasWidth, canvasHeight);
+	context.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvasWidth, canvasHeight);
+};

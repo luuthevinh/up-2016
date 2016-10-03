@@ -25,9 +25,20 @@
 
 		 		<a id="selectImageBtn" class="btn btn-success" onclick="selectFile()" role="button">Chọn hình</a>
 				<a id="downloadBtn" role="button" class="btn btn-info">Tải về</a>
+				
+				<input id="scaleBar" type="range" min="1" max="2" step="0.01"/>
+				<p>Kích thước: <span id="scaleValue">1</span></p>
 			</div>
 
-			<div class="col-md-4 col-md-offset-1">
+			<div class="col-md-6 col-md-offset-0">
+				<blockquote>
+					<ul>
+						<li>Bước 1: Chọn ảnh đại diện.</li>
+						<li>Bước 2: Chỉnh ảnh. (kéo ảnh để sửa vị trí / kéo thanh kích thước để phóng to thu nhỏ)</li>
+						<li>Bước 3: Tải ảnh về.</li>
+					</ul>
+				</blockquote>
+			
 				<div class="fb-page" data-href="https://www.facebook.com/tinhnguyenup2016" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/tinhnguyenup2016"><a href="https://www.facebook.com/tinhnguyenup2016">Up - Chiến dịch kết nối trái tim 2016</a></blockquote></div></div>
 			</div>
 		</div>
@@ -38,7 +49,12 @@
 	</div>
 
 	<div class="footer">
-		
+		<div class="container">	
+			<div class="meta-info">
+				&copy;
+				<a target="_blank" href="https://luuthevinh.me">about</a>
+			</div>
+		</div>
 	</div>
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

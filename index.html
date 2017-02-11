@@ -4,6 +4,7 @@
 	<title>Chiến dịch tình nguyện Up - Kết nối trái tim</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://use.fontawesome.com/81e2ab8508.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -23,8 +24,13 @@
 				<canvas id="canvas" class="thumbnail" >Xin lỗi, trình duyệt bạn không hỗ trợ.</canvas>
 		 		<img style="display: none;" id="source">
 
-		 		<a id="selectImageBtn" class="btn btn-success" onclick="selectFile()" role="button">Chọn hình</a>
+		 		<a id="selectImageBtn" class="btn btn-success" role="button">Chọn hình</a>
 				<a id="downloadBtn" role="button" class="btn btn-info">Tải về</a>
+				
+				<span class="pull-right">Xoay hình
+				<a id="clockwise" role="button" class="btn btn-default"><i class="fa fa-repeat" aria-hidden="true"></i></a>
+				<a id="counterclockwise" role="button" class="btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i></a>
+				</span>
 				
 				<input id="scaleBar" type="range" min="1" max="2" step="0.01"/>
 				<p>Kích thước: <span id="scaleValue">1</span></p>
@@ -44,7 +50,7 @@
 		</div>
 
 		<form>
-			<input style="display:none;" type="file" id="imageFile" accept="image/*" onchange="updateImage()">
+			<input style="display:none;" type="file" id="imageFile" accept="image/*" >
 		</form>
 	</div>
 
